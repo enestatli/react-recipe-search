@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+
+import RecipeDetails from './components/RecipeDetails'
+import RecipeList from './components/RecipeList'
+
 
 function App() {
+	const url = 'https://api.myjson.com/bins/t7szj'
+	const [recipes, setRecipes] = useState([])
+	const [loading, setLoading] = useState(true)
+
+	const fetchRecipe = async () => {
+		const recipeData = await fetch(url)
+		const {recipes} = await recipeData.json()
+		setRecipes(recipes)
+		setLoading(false)
+	}
+
+	useEffect(() => {
+		fetchRecipe()
+	})
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    	{loading ? <h1 className="text-center">...loading</h1> : <RecipeList recipes={recipes}/>}
+    	<RecipeDetails></RecipeDetails>
     </div>
   );
 }
