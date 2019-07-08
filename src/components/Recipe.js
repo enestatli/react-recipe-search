@@ -1,15 +1,18 @@
 import React, {useState} from 'react'
+import RecipeDetails from './RecipeDetails'
 
 export default function Recipe({recipe}) {
-	const {image_url, publisher, title, recipe_id} = recipe
+	//console.log(recipe)
 	const [showInfo, setShowInfo] = useState(false)
 	const [recipeDetails, setRecipeDetails] = useState([])
-	const {ingredients, social_rank} = recipeDetails
+	const { image_url, publisher, title, recipe_id } = recipe
+	const { ingredients, social_rank } = recipeDetails
 	const [buttonName, setButtonName] = useState("More Info")
+	console.log(ingredients)
 
 	const handleShowInfo = async (e) => {
 		const {id} = e.target.dataset
-		const response = await fetch(`https://www.food2fork.com/api/get?key=45cd7b9c139ab2ff7c03ef054c474ffe&rId=${id}`)
+		const response = await fetch(`https://www.food2fork.com/api/get?key=980b4cb1c041245e218c6fbe9603c7bb&rId=${id}`)
 		const {recipe} = await response.json()
 		setRecipeDetails(recipe)
 		setShowInfo(!showInfo)
@@ -29,16 +32,7 @@ export default function Recipe({recipe}) {
     			</div>
     			<div className="card-footer">
     				<button type="button" style={{margin:"13px"}} className="btn btn-primary text-center" data-id={recipe_id} onClick={handleShowInfo}>{buttonName}</button>
-    				{showInfo && 
-    					<button key={recipe_id} type="button" style={{margin:"13px"}} className="btn btn-success text-center font-weight-bold">{social_rank}</button>
-    				}
-    				{showInfo ?
-    					ingredients.map((i, index) => {
-    						return <ul key={index} className="list-group" style={{marginLeft:"20px"}}>
-    							<li className="list-group-items">{i}</li>
-    						</ul>
-    					}) : null
-    				}
+    				<RecipeDetails key={recipe_id} ingredients={ingredients} social_rank={social_rank} showInfo={showInfo} />
     			</div>
     		</div>
     	</div>

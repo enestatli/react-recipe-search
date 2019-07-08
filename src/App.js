@@ -1,29 +1,15 @@
-import React, { useState, useEffect } from 'react'
-
-import RecipeDetails from './components/RecipeDetails'
+import React, { useContext } from 'react';
 import RecipeList from './components/RecipeList'
+import { RecipeContext } from './context/index'
 
 
 function App() {
-	const url = 'https://api.myjson.com/bins/t7szj'
-	const [recipes, setRecipes] = useState([])
-	const [loading, setLoading] = useState(true)
-
-	const fetchRecipe = async () => {
-		const recipeData = await fetch(url)
-		const {recipes} = await recipeData.json()
-		setRecipes(recipes)
-		setLoading(false)
-	}
-
-	useEffect(() => {
-		fetchRecipe()
-	})
-
+  const appContext = useContext(RecipeContext)
+  const { loading, search } = appContext
   return (
     <div>
-    	{loading ? <h1 className="text-center">...loading</h1> : <RecipeList recipes={recipes}/>}
-    	<RecipeDetails></RecipeDetails>
+      {loading ? <h1 className="text-center">...fetching {search} recipe</h1> :
+        <RecipeList />}
     </div>
   );
 }

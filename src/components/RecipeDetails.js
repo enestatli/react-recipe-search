@@ -1,13 +1,17 @@
 import React from 'react'
 
-export default function RecipeDetails() {
-  return (
-    <div className="container">
-    	<div className="row">
-    		<div className="col-10 mx-auto col-md-6 my-3">
-    			<button type="button" className="btn btn-warning"></button>
-    		</div>
-    	</div>
-    </div>
-  )
+export default function RecipeDetails({ingredients, showInfo, social_rank}) {
+	return (
+		<>
+			{showInfo &&
+				<button type="button" style={{ margin: `13px` }} className="btn btn-success text-center font-weight-bold" >Social Rank: {social_rank}</button>}
+			{showInfo ?
+				ingredients.map((i, index) => 
+						<ul key={i} className="list-group">
+							<li className="list-group-item">{i}</li>
+						</ul>
+				)
+				: null}
+		</>
+	)
 }
